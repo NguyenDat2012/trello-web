@@ -22,19 +22,19 @@ function ModeSelect() {
         onChange={handleModeChange}
       >
         <MenuItem value="light">
-          <div style={{display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 3 }}>
             <LightModeIcon fontSize='small' />
             Light
           </div>
         </MenuItem>
         <MenuItem value="dark">
-          <div style={{display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 3 }}>
             <DarkModeIcon fontSize='small' />
             Dark
           </div>
         </MenuItem>
         <MenuItem value="system">
-          <div style={{display: 'flex', alignItems: 'center', gap: 1 }}>
+          <div style={{display: 'flex', alignItems: 'center', gap: 3 }}>
             <SettingsBrightnessIcon fontSize='small'/>
             System
           </div>
