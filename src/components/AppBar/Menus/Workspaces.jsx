@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
@@ -53,6 +53,7 @@ const Workspaces = () => {
             ⌘X
           </Typography>
         </MenuItem>
+
         <MenuItem>
           <ListItemIcon>
             <ContentCopy fontSize="small" />
@@ -62,6 +63,7 @@ const Workspaces = () => {
             ⌘C
           </Typography>
         </MenuItem>
+
         <MenuItem>
           <ListItemIcon>
             <ContentPaste fontSize="small" />
@@ -71,7 +73,9 @@ const Workspaces = () => {
             ⌘V
           </Typography>
         </MenuItem>
+
         <Divider />
+
         <MenuItem>
           <ListItemIcon>
             <Cloud fontSize="small" />
