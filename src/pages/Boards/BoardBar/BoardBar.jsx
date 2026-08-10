@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 const MENU_STYLES = {
   color: 'white',
   bgcolor: 'transparent',
@@ -23,7 +24,7 @@ const MENU_STYLES = {
   }
 }
 
-const BoardBar = () => {
+function BoardBar({ board }) {
   return (
     <Box
       sx={{
@@ -37,21 +38,20 @@ const BoardBar = () => {
         overflowX: 'auto',
         bgcolor: (theme) => (
           theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
-        ),
-        borderBottom: '1px solid white'
+        )
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Chip
           sx={MENU_STYLES}
           icon={<DashboardIcon />}
-          label="Nguyen Dat Dev"
+          label={board?.title}
           clickable
         />
         <Chip
           sx={MENU_STYLES}
           icon={<VpnLockIcon />}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable
         />
         <Chip
