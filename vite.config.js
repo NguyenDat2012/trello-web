@@ -14,14 +14,5 @@ export default defineConfig({
     alias: [
       { find: '~', replacement: '/src' }
     ]
-  },
-  optimizeDeps: {
-    include: [
-      '@mui/material',
-      '@mui/material/Popper',
-      '@emotion/react',
-      '@emotion/styled',
-      '@emotion/cache'
-    ]
   }
 })
