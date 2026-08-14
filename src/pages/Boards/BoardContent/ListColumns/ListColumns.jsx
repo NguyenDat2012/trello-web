@@ -43,7 +43,6 @@ function ListColumns({ columns }) {
         </Box>
       </Box>
     </SortableContext>
-    
   )
 }
 
