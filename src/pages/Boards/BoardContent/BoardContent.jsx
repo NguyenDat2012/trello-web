@@ -78,7 +78,7 @@ function BoardContent({ board }) {
       const modifier = isBelowOverItem ? 1 : 0
       newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
 
-      //clone mảng OrderedColumnsState cũ ra một cái mới để xử lý dât rồi return - cập nhật lại OrderedColumnsState mới
+      //clone mảng OrderedColumnsState cũ ra một cái mới để xử lý data rồi return - cập nhật lại OrderedColumnsState mới
       const nextColumns = cloneDeep(prevColumns)
       const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
       const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
@@ -279,7 +279,7 @@ function BoardContent({ board }) {
     //Tìm overId đầu tiên trong tất cả pointerIntersections ở trên
     let overId = getFirstCollision(pointerIntersections, 'id')
 
-    if(overId) {
+    if (overId) {
       const checkColumn = orderedColumns.find(column => column._id === overId)
       if (checkColumn) {
         overId = closestCorners({
