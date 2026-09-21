@@ -16,7 +16,7 @@ import {
   pointerWithin,
   getFirstCollision
 } from '@dnd-kit/core'
-import { MouseSensor, TouchSensor} from '~/customLibraries/DndKitSensors' 
+import { MouseSensor, TouchSensor } from '~/customLibraries/DndKitSensors'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import { cloneDeep, isEmpty } from 'lodash'
@@ -27,7 +27,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   // Yêu cầu chuột di chuyển 10px thì mới kích hoạt event, fix trường hợp click bị gọi event
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
 
@@ -48,7 +48,7 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
   //Điểm va chạm cuối cùng trước đó (xử lý thuật toán phát hiện va chạm)
   const lastOverId = useRef(null)
 
-  useEffect(()=> {
+  useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
   }, [board])
 
@@ -103,7 +103,7 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
         nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
 
         //Xóa cái card placeholder nếu đang tồn tại
-        nextActiveColumn.cards = nextActiveColumn.cards.filter(card => !card.FE_PlaceholderCard)
+        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
 
         //tiếp theo là thêm card đang kéo vào overcolumn theo vị trí index mới
         nextOverColumn.cards = nextOverColumn.cards.toSpliced(
@@ -184,15 +184,14 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
       if (active.id !== over.id) {
         //Lấy vị trí cũ từ active
         const oldColumnIndex = orderedColumns.findIndex(c => c._id === active.id)
-        //Lấy vị trí mới từ over 
+        //Lấy vị trí mới từ over
         const newColumnIndex = orderedColumns.findIndex(c => c._id === over.id)
 
         //Dùng arrayMove của dnd-kit để sắp xếp lại mảng columns ban đầu
         const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex)
-        // 2 cái console.log dữ liệu này sau này dùng để xử lý gọi API
-        // const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
-        // console.log('dndOrderedColumns: ', dndOrderedColumns)
-        // console.log('dndOrderedColumnsIds: ', dndOrderedColumnsIds)
+
+        //Gọi lên props fucntion moveColums nằm ở components cha cao nhất (boards/_id.jsx)
+        moveColumns(dndOrderedColumns)
 
         //Cập nhật lại state columns ban đầu sau khi đã kéo thả
         setOrderedColumns(dndOrderedColumns)
@@ -266,13 +265,13 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
     })
   }
   const collisionDetectionStrategy = useCallback((args) => {
-    //Trường hopwk kéo column thì dùng thuật toán closestCorners thì hợp hơn
+    //Trường hợp kéo column thì dùng thuật toán closestCorners thì hợp hơn
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
       return closestCorners({ ...args })
     }
 
     const pointerIntersections = pointerWithin(args)
-    if (!pointerIntersections?.length) return
+    if (!pointerIntersections?.length) return []
 
     // // thuật toán phát hiện va chạm trả về một mảng các va chạm ở đây
     // const intersections = !!pointerIntersections?.length ? pointerIntersections : rectIntersection(args)
@@ -283,20 +282,31 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
     if (overId) {
       const checkColumn = orderedColumns.find(column => column._id === overId)
       if (checkColumn) {
-        overId = closestCorners({
-          ...args,
-          droppableContainers: args.droppableContainers.filter(container => {
-            return (container.id !== overId) && (checkColumn?.cardOrderIds?.includes(container.id))
-          })[0]?.id
+        // overId = closestCorners({
+        //   ...args,
+        //   droppableContainers: args.droppableContainers.filter(container => {
+        //     return (container.id !== overId) && (checkColumn?.cardOrderIds?.includes(container.id))
+        //   })[0]?.id
+        // })
+        const filteredContainers = args.droppableContainers.filter(container => {
+          return (container.id !== overId) && (checkColumn?.cardOrderIds?.includes(container.id))
         })
+
+        if (filteredContainers.length > 0) {
+          const closestId = getFirstCollision(
+            closestCorners({ ...args, droppableContainers: filteredContainers }),
+            'id'
+          )
+          if (closestId) overId = closestId
+        }
       }
       lastOverId.current = overId
       return [{ id: overId }]
     }
 
-    return lastOverId.current ? [{ id: lastOverId.current}] : []
+    return lastOverId.current ? [{ id: lastOverId.current }] : []
 
-  }, [activeDragItemType])
+  }, [activeDragItemType, orderedColumns])
   return (
     <DndContext
       //Cảm biến

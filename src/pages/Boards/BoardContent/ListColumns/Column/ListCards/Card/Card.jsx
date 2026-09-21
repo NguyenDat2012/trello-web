@@ -33,12 +33,24 @@ function Card({ card }) {
       sx={{
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgba(0,0,0,0.2)',
-        // overflow: card?.FE_PlaceholderCard ? 'hidden' : 'unset',
-        // height: card?.FE_PlaceholderCard ? '0px' : 'unset',
+        //overflow: card?.FE_PlaceholderCard ? 'hidden' : 'unset',
+        //height: card?.FE_PlaceholderCard ? '0px' : 'unset',
         border: '1px solid transparent',
         '&:hover': { borderColor: (theme) => theme.palette.primary.main },
         overflow: 'unset',
-        display: card?.FE_PlaceholderCard ? 'none' : 'block'
+        // display: card?.FE_PlaceholderCard ? 'none' : 'block'
+        ...(card?.FE_PlaceholderCard && {
+          height: '0px',
+          padding: '0px',
+          margin: '0px',
+          border: 'none',
+          boxShadow: 'none',
+          overflow: 'hidden',
+          // Ép tất cả child về 0
+          '& *': {
+            display: 'none'
+          }
+        })
       }}>
       {card?.cover &&
         <CardMedia sx={{ height: 140 }} image={card?.cover}
