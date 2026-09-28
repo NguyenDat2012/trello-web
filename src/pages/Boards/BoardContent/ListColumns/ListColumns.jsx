@@ -9,13 +9,13 @@ import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 
 
-function ListColumns({ columns, createNewColumn, createNewCard }) {
+function ListColumns({ columns, createNewColumn, createNewCard, deleteColumnDetails }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const [newColumnTitle, setNewColumnTitle] = useState('')
 
-  const addNewColumn = async () => {
+  const addNewColumn = () => {
     if (!newColumnTitle) {
       toast.error('Please enter Column Title!')
       return
@@ -25,7 +25,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
 
     }
     //Gọi API
-    await createNewColumn(newColumnData)
+    createNewColumn(newColumnData)
 
     //Đóng trạng thái thêm column mới
     toggleOpenNewColumnForm()
@@ -43,7 +43,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
         '&::-webkit-scrollbar-track': { m: 2 }
       }}>
         {columns?.map(column => (
-          <Column key={column._id} column={column} createNewCard={createNewCard}/>
+          <Column key={column._id} column={column} createNewCard={createNewCard} deleteColumnDetails={deleteColumnDetails}/>
         ))}
         {/*Box add new column CTA */}
         {!openNewColumnForm

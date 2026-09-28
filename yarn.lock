@@ -1732,6 +1732,11 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+material-ui-confirm@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.npmjs.org/material-ui-confirm/-/material-ui-confirm-3.0.9.tgz"
+  integrity sha512-WEAEG9z4MfwojoUyQiAjrjl8378tYbGKfiwOKz3zHaQKyXcHnFktUmV7b+F+G0yVo8kYrEMk9Bw+HxhA/2Enlw==
+
 math-intrinsics@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz"
