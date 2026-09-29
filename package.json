@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "author": "Nguyen Dat",
-  "description": "https://youtube.com/@trungquandev",
   "engines": {
-    "node": ">=18.x"
+    "node": "18.x"
   },
   "scripts": {
     "dev": "vite --host",
