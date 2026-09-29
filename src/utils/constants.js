@@ -1,2 +1,14 @@
-//export const API_ROOT = 'http://localhost:8017'
-export const API_ROOT = 'https://trelloweb-api.onrender.com'
+let apiRoot = ''
+console.log('import.meta.env: ', import.meta.env)
+console.log('process.env: ', process.env)
+if (process.env.BUILD_MODE === 'development') {
+  apiRoot = 'http://localhost:8017'
+}
+
+if (process.env.BUILD_MODE === 'production') {
+  apiRoot = 'https://trelloweb-api.onrender.com'
+}
+console.log('🚀 ~ apiRoot:', apiRoot)
+
+export const API_ROOT = apiRoot
+
