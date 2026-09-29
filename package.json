@@ -5,7 +5,7 @@
   "type": "module",
   "author": "Nguyen Dat",
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
   "scripts": {
     "dev": "vite --host",
